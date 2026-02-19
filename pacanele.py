@@ -1,4 +1,5 @@
 import random
+import time
 
 #[ '📘' , '📦', '✏️', '🌯', '⭐️', '💎' , '🌌']  10 5 4 3 2 1 1
 slots_counter = [0, 0, 0, 0, 0, 0, 0]
@@ -16,6 +17,8 @@ while ok:
         print("Nu aveti suficiente credite, mai aveti", credit,"de credite")
         
 rotiri = int(input("Sa se zica nr de rotiri: "))
+print("Doriti ca rotirile sa fie automate? Daca da , nu veti putea dubla castigurile!")
+autospin = input("('y' for yes else just press enter) ")
 for i in range(rotiri):
     for counter in range(3):
         x[counter] = random.randint(1, 26)
@@ -47,52 +50,74 @@ for i in range(rotiri):
     print('')
 
     credit -= n
+    conditie_dublaj = True
+    castig = 0
 
     if(slots_counter[0] == 2):
-        credit += n * 0.5
+        castig += n * 0.5
         print(f'Ai castigat {n * 0.5} credite')
     elif(slots_counter[0] == 3):
-        credit += n * 1
+        castig += n * 1
         print(f'Ai castigat {n * 1} credite')
     elif(slots_counter[1] == 2):
-        credit += n * 1
+        castig += n * 1
         print(f'Ai castigat {n * 1} credite')
     elif(slots_counter[1] == 3):
-        credit += n * 3
+        castig += n * 3
         print(f'Ai castigat {n * 3} credite')
     elif(slots_counter[2] == 2):
-        credit += n * 2
+        castig += n * 2
         print(f'Ai castigat {n * 2} credite')
     elif(slots_counter[2] == 3):
-        credit += n * 5
+        castig += n * 5
         print(f'Ai castigat {n * 5} credite')
     elif(slots_counter[3] == 2):
-        credit += n * 4
+        castig += n * 4
         print(f'Ai castigat {n * 4} credite')
     elif(slots_counter[3] == 3):
-        credit += n * 8
+        castig += n * 8
         print(f'Ai castigat {n * 8} credite')
     elif(slots_counter[4] == 2):
-        credit += n * 5
+        castig += n * 5
         print(f'Ai castigat {n * 5} credite')
     elif(slots_counter[4] == 3):
-        credit += n * 15
+        castig += n * 15
         print(f'Ai castigat {n * 15} credite')
     elif(slots_counter[5] == 2):
-        credit += n * 20
+        castig += n * 20
         print(f'Ai castigat {n * 20} credite')
     elif(slots_counter[5] == 3):
-        credit += n * 100
+        castig += n * 100
         print(f'Ai castigat {n * 100} credite')
     else:
         print("Nu ai castigat nimic")
-        credit += 0
+        castig += 0
+        conditie_dublaj = False
 
+    if conditie_dublaj and autospin!='y':
+        raspuns_dublaj = input("Poti dubla castigul daca doresti (y = yes, else press enter) ") 
+        if raspuns_dublaj == 'y':
+            rng = random.randint(1, 2)
+            guess_rng = int(input("Care este nr generat? 1 sau 2, daca ghicesti corect ai dublat, daca nu ai pierdut tot: "))
+            if guess_rng == rng:
+                castig = castig * 2
+                print(f'Dublajul a fost cu succes, ai castigat {castig} credite')
+            else:
+                castig = 0
+                print("Ai pierdut dublajul, nu ai mai castigat nimic")
+                print(f'Nr generat a fost: {rng}')
+    
+    credit += castig
     slots_counter = [0, 0, 0, 0, 0 ,0, 0]
     x = [0, 0, 0]
     print(f'Nr de credite: {credit}')
-    if(i!=rotiri-1):
-        enter = input('Apasati enter pentru a roti in continuare')
+    if autospin != 'y':
+        if(i!=rotiri-1):
+            print('')
+            enter = input('Apasati enter pentru a roti in continuare')
+            print('')
+    else:
+        time.sleep(1)
 
 
 print(f'Nr de credite finale: {credit}')
